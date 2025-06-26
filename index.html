@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divisor de Cuentas</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="grupo-section">
+            <h1>Divisor de Cuentas</h1>
+            <div style="margin-bottom:10px;">
+                <input type="text" id="nombre-usuario" placeholder="Tu nombre" style="margin-bottom:8px;">
+                <br>
+                <button id="crear-grupo">Crear grupo</button>
+                <button id="mostrar-unirse">Unirse a grupo</button>
+            </div>
+            <div id="unirse-div" style="display:none;">
+                <input type="text" id="codigo-grupo" placeholder="Código de grupo">
+                <button id="unirse-grupo">Unirse</button>
+            </div>
+            <div id="codigo-creado" style="display:none; margin-top:10px;">
+                <span id="codigo-creado-text"></span>
+                <button id="copiar-codigo">Copiar código</button>
+                <button id="entrar-grupo">Entrar al grupo</button>
+            </div>
+        </div>
+        <div id="main-app" style="display:none;">
+            <div id="grupo-info" style="margin-bottom:16px;"></div>
+            <h1>Divisor de Cuentas</h1>
+            <section id="amigos-section">
+                <h2>Amigos</h2>
+                <input type="text" id="amigo-nombre" placeholder="Nombre del amigo">
+                <button id="agregar-amigo">Agregar</button>
+                <ul id="lista-amigos"></ul>
+                <div style="margin-top:10px;">
+                    <label for="responsable-select"><b>Responsable (quien paga todo):</b></label>
+                    <select id="responsable-select"></select>
+                </div>
+            </section>
+            <section id="gastos-section">
+                <h2>Gastos</h2>
+                <input type="text" id="gasto-desc" placeholder="Descripción">
+                <input type="number" id="gasto-monto" placeholder="Monto">
+                <select id="gasto-pagador"></select>
+                <div id="gasto-participantes" style="margin: 8px 0;"></div>
+                <button id="agregar-gasto">Agregar Gasto</button>
+                <ul id="lista-gastos"></ul>
+            </section>
+            <section id="resumen-section">
+                <h2>Resumen</h2>
+                <button id="calcular">Calcular Deudas</button>
+                <ul id="resumen-deudas"></ul>
+            </section>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
