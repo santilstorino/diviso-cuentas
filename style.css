@@ -7,6 +7,35 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+body.dark-mode {
+    background-color: #181a1b;
+    background-image: none;
+    color: #e0e0e0;
+}
+body.dark-mode .container {
+    background: rgba(34, 34, 34, 0.96);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+body.dark-mode h1, body.dark-mode h2, body.dark-mode label, body.dark-mode b {
+    color: #fafafa;
+}
+body.dark-mode input, body.dark-mode select, body.dark-mode button {
+    background: #23272b;
+    color: #fafafa;
+    border: 1px solid #444;
+}
+body.dark-mode button {
+    background: #333c4d;
+    color: #fff;
+}
+body.dark-mode button:hover {
+    background: #222a36;
+}
+body.dark-mode li {
+    background: #23272b;
+    border: 1px solid #333;
+    color: #fafafa;
+}
 .container {
       max-width: 500px;
       margin: 40px auto;

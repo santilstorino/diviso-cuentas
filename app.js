@@ -51,6 +51,7 @@ const grupoInfoDiv = document.getElementById('grupo-info');
 const mpDatosInput = document.getElementById('mp-datos');
 const guardarMpBtn = document.getElementById('guardar-mp');
 const mpDatosMostrado = document.getElementById('mp-datos-mostrado');
+const toggleDarkModeBtn = document.getElementById('toggle-dark-mode');
 
 // --- Funciones de grupo ---
 function mostrarApp(grupo) {
@@ -336,4 +337,26 @@ function escucharMpDatos(grupo) {
 window.marcarPagado = function(a, responsable, grupoId) {
     deudasPagadas[a + '_' + responsable + '_' + grupoId] = true;
     calcularDeudas();
-} 
+}
+
+// --- Modo oscuro ---
+function setDarkMode(enabled) {
+    document.body.classList.toggle('dark-mode', enabled);
+    if (enabled) {
+        toggleDarkModeBtn.textContent = '☀️ Modo claro';
+    } else {
+        toggleDarkModeBtn.textContent = '🌙 Modo oscuro';
+    }
+    localStorage.setItem('darkMode', enabled ? '1' : '0');
+}
+
+toggleDarkModeBtn.addEventListener('click', () => {
+    const isDark = document.body.classList.contains('dark-mode');
+    setDarkMode(!isDark);
+});
+
+// Al cargar la página, restaurar preferencia
+window.addEventListener('DOMContentLoaded', () => {
+    const darkPref = localStorage.getItem('darkMode') === '1';
+    setDarkMode(darkPref);
+}); 
