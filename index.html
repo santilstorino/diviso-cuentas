@@ -40,6 +40,12 @@
                     <label for="responsable-select"><b>Responsable (quien paga todo):</b></label>
                     <select id="responsable-select"></select>
                 </div>
+                <div id="mp-section" style="margin-top:10px;">
+                    <label for="mp-datos"><b>Alias/CBU/Link Mercado Pago del responsable:</b></label>
+                    <input type="text" id="mp-datos" placeholder="Alias, CBU o link de Mercado Pago">
+                    <button id="guardar-mp">Guardar</button>
+                    <div id="mp-datos-mostrado" style="margin-top:5px;"></div>
+                </div>
             </section>
             <section id="gastos-section">
                 <h2>Gastos</h2>
@@ -48,6 +54,7 @@
                 <select id="gasto-pagador"></select>
                 <div id="gasto-participantes" style="margin: 8px 0;"></div>
                 <button id="agregar-gasto">Agregar Gasto</button>
+                <ul id="lista-gastos"></ul>
                 <ul id="lista-gastos"></ul>
             </section>
             <section id="resumen-section">

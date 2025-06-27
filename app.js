@@ -19,6 +19,8 @@ let grupoId = null;
 let unsubAmigos = null;
 let unsubGastos = null;
 let codigoGrupoCreado = null;
+let mpDatos = '';
+let deudasPagadas = {};
 
 // --- Elementos del DOM ---
 const grupoSection = document.getElementById('grupo-section');
@@ -46,6 +48,9 @@ const copiarCodigoBtn = document.getElementById('copiar-codigo');
 const entrarGrupoBtn = document.getElementById('entrar-grupo');
 const nombreUsuarioInput = document.getElementById('nombre-usuario');
 const grupoInfoDiv = document.getElementById('grupo-info');
+const mpDatosInput = document.getElementById('mp-datos');
+const guardarMpBtn = document.getElementById('guardar-mp');
+const mpDatosMostrado = document.getElementById('mp-datos-mostrado');
 
 // --- Funciones de grupo ---
 function mostrarApp(grupo) {
@@ -53,6 +58,7 @@ function mostrarApp(grupo) {
     mainApp.style.display = 'block';
     document.title = `Divisor de Cuentas - ${grupo}`;
     mostrarGrupoInfo(grupo);
+    escucharMpDatos(grupo);
 }
 
 function mostrarGrupoInfo(grupo) {
@@ -255,7 +261,6 @@ function calcularDeudas() {
     if (!responsable) return;
     let debe = {};
     amigos.forEach(a => { debe[a] = 0; });
-    // Sumar lo que debería poner cada uno según los gastos (todos pagados por el responsable)
     gastos.forEach(gasto => {
         const montoPorPersona = gasto.monto / gasto.participantes.length;
         gasto.participantes.forEach(a => {
@@ -267,7 +272,13 @@ function calcularDeudas() {
         if (a !== responsable) {
             let li = document.createElement('li');
             if (debe[a] > 0) {
-                li.textContent = `${a} le debe $${debe[a].toFixed(2)} a ${responsable}`;
+                // Botón de pago y pagado en efectivo
+                let pagado = deudasPagadas[a + '_' + responsable + '_' + grupoId];
+                li.innerHTML = pagado
+                  ? `<s>${a} le debe $${debe[a].toFixed(2)} a ${responsable} (Pagado)</s>`
+                  : `${a} le debe $${debe[a].toFixed(2)} a ${responsable}` +
+                    (mpDatos ? ` <button onclick="window.open('${mpDatos}','_blank')">Pagar por MP</button>` : '') +
+                    ` <button onclick="marcarPagado('${a}','${responsable}','${grupoId}')">Pagado en efectivo</button>`;
             } else {
                 li.textContent = `${a} está saldado.`;
             }
@@ -295,4 +306,34 @@ window.addEventListener('DOMContentLoaded', () => {
         mostrarApp(grupoParam);
         escucharGrupo(grupoParam);
     }
-}); 
+});
+
+guardarMpBtn.addEventListener('click', () => {
+    mpDatos = mpDatosInput.value.trim();
+    if (mpDatos && grupoId) {
+        db.collection('grupos').doc(grupoId).set({ mpDatos }, { merge: true });
+        mostrarMpDatos();
+    }
+});
+
+function mostrarMpDatos() {
+    if (mpDatos) {
+        mpDatosMostrado.innerHTML = `<b>Datos para pagar al responsable:</b> <br>${mpDatos}`;
+    } else {
+        mpDatosMostrado.innerHTML = '';
+    }
+}
+
+// Escuchar cambios en los datos de MP del grupo
+function escucharMpDatos(grupo) {
+    db.collection('grupos').doc(grupo).onSnapshot(doc => {
+        mpDatos = doc.data()?.mpDatos || '';
+        mostrarMpDatos();
+    });
+}
+
+// Función global para marcar deuda como pagada
+window.marcarPagado = function(a, responsable, grupoId) {
+    deudasPagadas[a + '_' + responsable + '_' + grupoId] = true;
+    calcularDeudas();
+} 
